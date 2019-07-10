@@ -1,0 +1,47 @@
+<!DOCTYPE html>           
+   <html>   <!--STATUS OK-->  <head>  
+<meta http-equiv='Content-Type' content="text/html; charset=utf-8">
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<link rel="dns-prefetch" href="https://timgsa.baidu.com">
+<!--[if lt IE 6]>
+<meta http-equiv='refresh' content="0;url=/search/detail?ct=503316480&z=0&tn=baiduimagedetailnojs&ipn=dnj&&word=tu&cl=&lm=&pn=2&di=197010&ln=30&amp;ie=utf-8">
+<style>
+        body, table, .p {
+            display: none
+        }
+    </style>
+<![endif]-->
+<script>
+    (function (context) {
+        var data = {};
+        var url = '//imgstat.baidu.com/17.gif';
+        var start = +new Date;
+        var createQuery = function (data) {
+            var ret = [];
+            for (var key in data) {
+                ret.push(key + '=' + data[key]);
+            }
+            return ret.join('&');
+        };
+
+        var _mergeCommPara = function (data) {
+            data.etype = 'speed';
+            data.page = 'detail';
+            data.browser = '';
+
+            data.logid = "12337759078355349694";
+            data.os = '';
+            data.wd = '';
+            data.sid = '9732449a4a5f69d93c47aeaa039ec9659615f840';
+            data.wh = window.screen.width + 'x' + window.screen.height ;
+            data.sampid = '-1';
+            // data.app = 'searchdetail';
+            data.spat = 0 + '-' + '';
+            data.protocol = window.location.protocol.replace(':', '');
+            if ('2' - 0) {
+                data.ishttps = '2';
+            }
+            return data;
+        };
+        var _profiles = {
+            'slide
