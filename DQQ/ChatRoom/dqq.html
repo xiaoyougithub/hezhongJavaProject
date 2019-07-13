@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>公共聊天室</title>
+	</head>
+	<style type="text/css">
+		body{
+			background: url(img/sky.jpg);
+			color: white;
+		}
+		#userMessage,#content,#inputDiv{
+			margin: auto;
+		}
+		#userMessage{
+			width: 95%;
+			background-color:rgba(20,20,235,0.5);
+		}
+		#content{
+			display: block;
+			width: 95%;
+			height: 380px;
+			background: #F08080;
+			overflow: overlay;
+			overflow: scroll;
+		}
+		#content,button{
+			background-color: rgba(150,50,50,0.8);
+		}
+		#inputDiv{
+			width: 95%;
+			height: 30px;
+		}
+		input{
+			height: 30px;
+			width: 186px;
+			padding: 0;
+			border: 0;
+			margin: 0;
+			border-radius: 10px;
+		}
+		button{
+			color: white;
+			width: 70px;
+			height: 30px;
+			margin: 0;
+			padding: 0;
+			border: 0;
+			border-radius: 10px;
+		}
+	</style>
+<body>
+	<div id="userMessage">
+		<section><span>DQQ【公共聊天室】</span></section>
+		<section>当前用户：<span id="presentUser"></span><span id="state"></span></section>
+    	<hr/>
+	</div>
+	<div id="content">
+    	<div id="message">
+    		
+    	</div>	
+	</div>
+	<div id="inputDiv">
+	<hr />
+		 <input id="text" type="text"/><button onclick="send()">群发消息</button><button onclick="closeWebSocket()">离线</button>
+	</div>    
+</body>  
+<script type="text/javascript">  
+	//获取用户的值
+	var userName;
+	function getUserName(){
+		var cookies=unescape(document.cookie);
+		var cookieArray=cookies.split(";");
+		var cookie;
+		for(var i=0;i<cookieArray.length;i++){
+			cookie=cookieArray[i].split("=");
+			if(cookie[0]=="userName"){
+				userName=cookie[1];
+			}
+		}
+	}
+	//页面加载时的处理函数
+	window.onload=function (){ 
+		getUserName();
+		document.getElementById("presentUser").innerText=userName;
+		alert("当前用户："+userName);
+	}
+	
+    var websocket = null;  
+    
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {  
+        websocket = new WebSocket("ws://192.168.1.106:8080/DQQ/ws");
+        //websocket = new WebSocket("ws://192.168.43.131:8080/web1/websocket");
+    }  
+    else {  
+        alert('当前浏览器 Not support websocket')  
+    }  
+
+    //连接发生错误的回调方法  
+    websocket.onerror = function () {  
+        setStateInnerHTML("loginMessageP","WebSocket连接发生错误");  
+    };  
+    //连接成功建立的回调方法  
+    websocket.onopen = function () {  
+        setStateInnerHTML("state","（在线）");
+        getUserName();        
+        websocket.send("username:"+userName);
+    }
+    //接收到消息的回调方法  
+    websocket.onmessage = function (event) {
+        setMessageInnerHTML("message",event.data);  
+    }  
+    //连接关闭的回调方法  
+    websocket.onclose = function () {
+    	getUserName();
+		setStateInnerHTML("state","（离线）");
+        setMessageInnerHTML("message",userName+"离开了公共聊天室");
+    }
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。  
+    window.onbeforeunload = function () {
+    	getUserName();
+    	websocket.send("departure:"+userName);
+        closeWebSocket();  
+    }
+    //将消息显示在网页上  
+    function setMessageInnerHTML(elementId,innerHTML) {  
+        document.getElementById(elementId).innerHTML += innerHTML+"</br>";  
+    }
+     //将消息显示在网页上  
+    function setStateInnerHTML(elementId,innerHTML) {  
+        document.getElementById(elementId).innerHTML = innerHTML;  
+    }
+    //关闭WebSocket连接  
+    function closeWebSocket() {
+    	getUserName();
+    	websocket.send("departure:"+userName);
+        websocket.close();  
+    }
+    //发送消息  
+    function send() {
+        var message = document.getElementById('text');  
+        websocket.send("message:"+userName+":"+message.value);  
+        message.value="";
+    }
+</script>  
+</html>

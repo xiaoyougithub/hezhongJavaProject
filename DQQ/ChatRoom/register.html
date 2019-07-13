@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/register.css" />
+	</head>
+	<style type="text/css">
+		
+	</style>
+	<body>
+	<table>
+		<caption><h3>DQQ注册页面</h3></caption>
+		<tr><td><label>用户</label></td><td><input id="userName" type="text"/></td></tr>
+		<tr><td>密码</label></td><td><input id="password" type="password"/></td></tr>
+		<tr><td>重复密码</label></td><td><input id="repeatPassword" type="password"/></td></tr>
+		<tr><td><label>邮箱（选填）</label></td><td><input id="email" type="text"/></td></tr>
+		<tr><td colspan="2"><button onclick="register()">注册</button><button onclick="toLogin()">回去登录</button></td></tr>
+	</table>
+	</body>
+	<script type="text/javascript">
+		//注册数据验证
+		var userName;
+		var password;
+		var repeatPassword;
+		var email;
+		function register(){
+			userName=document.getElementById("userName").value;
+			password=document.getElementById("password").value;
+			repeatPassword=document.getElementById("repeatPassword").value;
+			email=document.getElementById("email").value;
+			if(userName==""){
+				alert("用户民不为空！");
+			}else if(password==""){
+				alert("密码不为空！");
+				
+			}else if(repeatPassword==""){
+				alert("重复密码不为空!");
+			}else if(password!=repeatPassword){
+				alert("密码不一致！");
+			}else{
+				alert("核验通过，请等待后台数据库验证！");
+				var xhr=new XMLHttpRequest();
+				var url="http://192.168.1.106:8080/DQQ/register.jsp";
+				xhr.open("POST",url,true);
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset-UTF-8");
+				xhr.onreadystatechange=function(){
+					if(xhr.status==200&&xhr.readyState==4){
+						alert(xhr.response);
+						alert(xhr.responseText.length)
+						if(xhr.responseText.length<18){
+							alert("用户名存在");
+						}else{
+							alert("注册成功，请到登录页面登录");
+//							document.cookie="userName="+escape(userName);
+							window.location="index.html";
+						}
+					}
+				}
+				xhr.send("userName="+userName+"&password="+password+"&email="+email);
+			}	
+		}
+		function toLogin(){
+			window.location="index.html";
+		}
+	</script>
+</html>

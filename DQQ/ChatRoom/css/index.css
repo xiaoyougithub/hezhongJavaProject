@@ -1,0 +1,25 @@
+body{
+	color:white;
+	background: url(../img/sky.jpg);
+}
+table{
+	width: 90%;
+	font-size: 20px;
+	margin: auto;
+	text-align: center;
+	background-color: rgba(250,250,20,0.6);
+}
+caption{
+	background-color: rgba(20,20,235,0.5);
+}
+input,button{
+	border-radius: 10px;
+	height: 40px;
+	background-color: rgba(250,250,20,0.6);
+}
+button{
+	width: 100px;
+}
+tr{
+	height: 60px;
+}
